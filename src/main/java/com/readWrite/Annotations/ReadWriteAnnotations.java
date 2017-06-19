@@ -1,5 +1,9 @@
 package com.readWrite.Annotations;
 
+import java.io.IOException;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ReadWriteAnnotations {
@@ -9,9 +13,11 @@ public class ReadWriteAnnotations {
 		jsonIgnore();
 		jsonIgnoreProperties();
 		jsonIgnoreType();
+		jsonAutoDetect();
 
 	}
 
+	
 	/**
 	 * ignore a certain property (field) of a Java object.
 	 */
@@ -55,11 +61,14 @@ public class ReadWriteAnnotations {
 
 	}
 
+	/**
+	 * mark a whole type (class) to be ignored everywhere that type is used
+	 */
 	private static void jsonIgnoreType() {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		String personJson = "{ \"personId\" : 345, \"name\" : \"kiran\", \"address\" : { \"streetName\" : }}";
+		String personJson = "{ \"personId\" : 345, \"name\" : \"kiran\", \"address\" : { \"streetName\" : \"GayathriNagar\", \"city\" : \"Hyderabad\"}}";
 
 		try {
 
@@ -67,7 +76,7 @@ public class ReadWriteAnnotations {
 
 			System.out.println("person.personId = " + person.personId);
 			System.out.println("person.name = " + person.name);
-			System.out.println("person = " + person);
+			System.out.println("person.address = " + person.address);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -75,5 +84,26 @@ public class ReadWriteAnnotations {
 		}
 
 	}
+	
+	private static void jsonAutoDetect() {
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		String personJson = "{ \"personId\" : 34, \"name\" : \"Hari\" }";
+		
+		try {
+			PersonAutoDetect person = objectMapper.readValue(personJson, PersonAutoDetect.class);
+			
+			System.out.println("person.personId = " + person.personId);
+			System.out.println("person.name = " + person.name);
+			
+		}  catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+
 
 }
