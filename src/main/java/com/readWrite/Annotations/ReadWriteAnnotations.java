@@ -2,8 +2,6 @@ package com.readWrite.Annotations;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ReadWriteAnnotations {
@@ -14,14 +12,17 @@ public class ReadWriteAnnotations {
 		jsonIgnoreProperties();
 		jsonIgnoreType();
 		jsonAutoDetect();
+		PersonAutoDetect p = new PersonAutoDetect();
+		System.out.println(p.personId);
 
 	}
 
-	
 	/**
 	 * ignore a certain property (field) of a Java object.
 	 */
 	private static void jsonIgnore() {
+
+		System.out.println("\nJson Ignore........");
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		String personJson = "{ \"personId\" : 34, \"name\" : \"Kiran\"}";
@@ -42,6 +43,8 @@ public class ReadWriteAnnotations {
 	 * list of properties of a class to ignore.
 	 */
 	private static void jsonIgnoreProperties() {
+
+		System.out.println("\njsonIgnoreProperties...........");
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
@@ -66,6 +69,8 @@ public class ReadWriteAnnotations {
 	 */
 	private static void jsonIgnoreType() {
 
+		System.out.println("\njsonIgnoreType...........");
+
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		String personJson = "{ \"personId\" : 345, \"name\" : \"kiran\", \"address\" : { \"streetName\" : \"GayathriNagar\", \"city\" : \"Hyderabad\"}}";
@@ -84,26 +89,31 @@ public class ReadWriteAnnotations {
 		}
 
 	}
-	
+
+	/**
+	 * include properties which are not public, both when reading and writing
+	 * objects
+	 */
 	private static void jsonAutoDetect() {
-		
+
+		System.out.println("\njsonAutoDetect.........");
+
 		ObjectMapper objectMapper = new ObjectMapper();
-		
+
 		String personJson = "{ \"personId\" : 34, \"name\" : \"Hari\" }";
-		
+
 		try {
+			// objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+			// false);
 			PersonAutoDetect person = objectMapper.readValue(personJson, PersonAutoDetect.class);
-			
+
 			System.out.println("person.personId = " + person.personId);
 			System.out.println("person.name = " + person.name);
-			
-		}  catch (IOException e) {
-			// TODO Auto-generated catch block
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
-	}
 
+	}
 
 }
