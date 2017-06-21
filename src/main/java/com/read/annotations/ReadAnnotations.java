@@ -1,7 +1,9 @@
 package com.read.annotations;
 
+import java.io.File;
 import java.io.IOException;
 
+import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ReadAnnotations {
@@ -11,6 +13,7 @@ public class ReadAnnotations {
 		jsonSetter();
 		jsonAnySetter();
 		jsonCreator();
+		jacksonInject();
 
 	}
 
@@ -40,6 +43,11 @@ public class ReadAnnotations {
 
 	}
 
+	/**
+	 * instructs Jackson to call the same setter method for all unrecognized
+	 * fields in the JSON object
+	 */
+
 	private static void jsonAnySetter() {
 
 		System.out.println("jsonAnySetter.............");
@@ -61,6 +69,13 @@ public class ReadAnnotations {
 
 	}
 
+	/**
+	 * used to tell Jackson that the Java object has a constructor (a "creator")
+	 * which can match the fields of a JSON object to the fields of the Java
+	 * object.
+	 * 
+	 */
+
 	private static void jsonCreator() {
 
 		System.out.println("jsonCreator..........");
@@ -74,6 +89,36 @@ public class ReadAnnotations {
 			System.out.println("person.id = " + person.getId());
 			System.out.println("person.name = " + person.getName());
 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * used to inject values into the parsed objects, instead of reading those
+	 * values from the JSON
+	 * 
+	 * In person object, only id and name are present, but we injected source
+	 * name also, and in output the inject value is printed.
+	 */
+
+	private static void jacksonInject() {
+
+		System.out.println("jsoninject.......");
+
+		InjectableValues inject = new InjectableValues.Std().addValue(String.class, "jsonDemo.com");
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		try {
+			PersonInject person = objectMapper.reader(inject).forType(PersonInject.class)
+					.readValue(new File("src/main/resources/file/person.json"));
+
+			System.out.println("person.id = " + person.id);
+			System.out.println("person.name = " + person.name);
+			System.out.println("person.source = " + person.source);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
