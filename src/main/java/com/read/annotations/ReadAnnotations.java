@@ -3,6 +3,7 @@ package com.read.annotations;
 import java.io.File;
 import java.io.IOException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,6 +15,7 @@ public class ReadAnnotations {
 		jsonAnySetter();
 		jsonCreator();
 		jacksonInject();
+		jsonDeserialize();
 
 	}
 
@@ -121,6 +123,30 @@ public class ReadAnnotations {
 			System.out.println("person.source = " + person.source);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	/**
+	 * used to specify a custom de-serializer class for a given field in a Java object.
+	 */
+
+	private static void jsonDeserialize() {
+		
+		System.out.println("jsonDeserialize........");
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		try {
+			PersonDeserialize person = objectMapper.reader(PersonDeserialize.class)
+					.readValue(new File("src/main/resources/file/person-optimized-boolean.json"));
+			
+			System.out.println("person.id = " + person.id);
+			System.out.println("person.name = " + person.name);
+			System.out.println("person.enabled = " + person.enabled);
+			
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
