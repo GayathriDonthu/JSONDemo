@@ -1,0 +1,16 @@
+{
+	"cars": [ 
+				{
+					"brand" : "BMW",
+					"doors" : 4
+				},
+				{	
+					"brand" : "Audi",
+					"doors" : 6
+				},
+				{
+					"brand" : "Swift",
+					"doors" : 5
+				}
+		    ]
+}

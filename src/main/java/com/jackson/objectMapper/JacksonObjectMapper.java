@@ -3,7 +3,7 @@ package com.jackson.objectMapper;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.utilities.Car;
+import com.jackson.utilities.Car;
 
 public class JacksonObjectMapper {
 
